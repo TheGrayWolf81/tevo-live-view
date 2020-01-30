@@ -1,0 +1,64 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Tevo Tarantula Remote View</title>
+
+	<style>
+		#container {
+			margin: 0px auto;
+			width: 500px;
+			height: 375px;
+			border: 10px #333 solid;
+		}
+		#videoElement {
+			width: 500px;
+			height: 375px;
+			background-color: #666;
+		}
+		.center {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body onload="startTime()">
+	<h1><center>Tevo Tarantula Live View</center></h1>
+	<div id="container">
+		<video autoplay="true" id="videoElement">
+			
+		</video>
+	</div>
+	<div class="center" id="time"></div>
+	<script>
+		var video = document.querySelector("#videoElement");
+
+		if (navigator.mediaDevices.getUserMedia) {
+			navigator.mediaDevices.getUserMedia({video: true})
+				.then(function (stream) {
+					video.srcObject = stream;
+				})
+				.catch(function (err0r) {
+					console.log("Something went wrong!");
+				});
+		}
+
+		function startTime(){
+			var today=new Date();
+			var h=today.getHours();
+			var m=today.getMinutes();
+			var s=today.getSeconds();
+			// add a zero in front of numbers<10
+			m=checkTime(m);
+			s=checkTime(s);
+			document.getElementById('time').innerHTML=h+":"+m+":"+s;
+			t=setTimeout('startTime()',500);
+		}
+		function checkTime(i){
+			if (i<10){
+				i="0" + i;
+			}
+			return i;
+		}
+	</script>
+</body>
+</html>
